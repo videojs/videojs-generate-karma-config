@@ -72,14 +72,10 @@ Example with detected browsers:
 module.exports = function(karmaConfig) {
   const options = {
     browsers(aboutToRun) {
-      const safariIndex = aboutToRun.indexOf('Safari');
-
       // never test on Safari
-      if (safariIndex !== -1) {
-        aboutToRun.splice(safariIndex, 1)
-      }
-
-      return aboutToRun;
+      return aboutToRun.filter(function(launcherName) {
+        return launcherName !== 'Safari';
+      });
     }
   };
 
@@ -158,7 +154,7 @@ module.exports = function(karmaConfig) {
 > Type: `Function`
 > Default: `none`
 
-> NOTE: All browsers contained from this object will be run on teamcity, even with BROWSER_STACK_USERNAME in the enviornment!
+> NOTE: All browsers contained from this object will be run on teamcity, unless BROWSER_STACK_USERNAME is in the enviornment!
 
 A function that should return an object of karma custom launchers, that should be run on teamcity. It should take one argument: The default custom launchers object which is: `{}`;
 
@@ -186,7 +182,7 @@ module.exports = function(karmaConfig) {
 > Type: `Function`
 > Default: `none`
 
-> NOTE: All browsers contained from this object will be run on travis, even with BROWSER_STACK_USERNAME in the enviornment!
+> NOTE: All browsers contained from this object will be run on travis, unless BROWSER_STACK_USERNAME is in the enviornment!
 
 A function that should return an object containing karma custom launchers, that should all be run on travis. It should take one argument: The default travis launchers object which is:
 

@@ -208,22 +208,13 @@ module.exports = function(config, options = {}) {
 
   /* dynamic configuration, for ci and detectBrowsers */
 
-  let ciBrowsers = [];
-
   // determine what browsers should be run on this environment
   if (process.env.BROWSER_STACK_USERNAME) {
-    ciBrowsers = ciBrowsers.concat(Object.keys(settings.browserstackLaunchers));
-  }
-
-  if (process.env.TRAVIS) {
-    ciBrowsers = ciBrowsers.concat(Object.keys(settings.travisLaunchers));
+    config.browsers = Object.keys(settings.browserstackLaunchers);
+  } else if (process.env.TRAVIS) {
+    config.browsers = Object.keys(settings.travisLaunchers);
   } else if (process.env.TEAMCITY_VERSION) {
-    ciBrowsers = ciBrowsers.concat(Object.keys(settings.teamcityLaunchers));
-  }
-
-  // ci browsers override all other brosers
-  if (ciBrowsers.length) {
-    config.browsers = ciBrowsers;
+    config.browsers = Object.keys(settings.teamcityLaunchers);
   }
 
   // if running on travis
