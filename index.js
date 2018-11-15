@@ -187,7 +187,10 @@ module.exports = function(config, options = {}) {
       captureTimeout: 600,
       timeout: 600
     },
-    reporters: ['dots', 'coverage'],
+    reporters: ['dots', 'coverage', 'summary-reporter'],
+    summaryReporter: {
+      show: 'all'
+    },
     coverageReporter: {
       reporters: [
         // generates test/dist/coverage/index.html

@@ -45,6 +45,7 @@
     "karma-safari-launcher": "^1.0.0",
     "karma-safaritechpreview-launcher": "0.0.6",
     "karma-static-server": "^1.0.0",
+    "karma-summary-reporter": "^1.5.1",
     "karma-teamcity-reporter": "^1.1.0",
     "qunit": "^2.8.0"
   },
