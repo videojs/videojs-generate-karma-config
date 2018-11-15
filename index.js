@@ -187,7 +187,11 @@ module.exports = function(config, options = {}) {
       captureTimeout: 600,
       timeout: 600
     },
-    reporters: ['dots', 'coverage'],
+    reporters: ['dots', 'spec', 'coverage'],
+    // failures will be reported in more detail by the `dots` reporter
+    specReporter: {
+      suppressFailed: true
+    },
     coverageReporter: {
       reporters: [
         // generates test/dist/coverage/index.html
