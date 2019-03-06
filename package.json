@@ -11,7 +11,8 @@
     "preversion": "npm test",
     "version": "is-prerelease || npm run update-changelog && git add CHANGELOG.md",
     "update-changelog": "conventional-changelog -p videojs -i CHANGELOG.md -s",
-    "prepublishOnly": "npm run test:verify"
+    "prepublishOnly": "npm run test:verify",
+    "postinstall": "patch-package"
   },
   "lint-staged": {
     "*.js": [
@@ -35,6 +36,7 @@
   },
   "homepage": "https://github.com/videojs/videojs-generate-karma-config",
   "dependencies": {
+    "find-root": "^1.1.0",
     "karma-browserstack-launcher": "^1.4.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.2",
@@ -42,10 +44,11 @@
     "karma-firefox-launcher": "^1.1.0",
     "karma-ie-launcher": "^1.0.0",
     "karma-qunit": "^2.0.0",
-    "karma-safari-launcher": "^1.0.0",
+    "karma-safari-launcher": "1.0.0",
     "karma-safaritechpreview-launcher": "0.0.6",
     "karma-static-server": "^1.0.0",
     "karma-teamcity-reporter": "^1.1.0",
+    "patch-package": "^6.0.2",
     "qunit": "~2.9.1"
   },
   "peerDependencies": {
