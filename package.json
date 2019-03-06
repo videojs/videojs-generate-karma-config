@@ -12,7 +12,7 @@
     "version": "is-prerelease || npm run update-changelog && git add CHANGELOG.md",
     "update-changelog": "conventional-changelog -p videojs -i CHANGELOG.md -s",
     "prepublishOnly": "npm run test:verify",
-    "postinstall": "patch-package"
+    "postinstall": "node postinstall.js"
   },
   "lint-staged": {
     "*.js": [
