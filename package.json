@@ -13,6 +13,12 @@
     "update-changelog": "conventional-changelog -p videojs -i CHANGELOG.md -s",
     "prepublishOnly": "npm run test:verify"
   },
+
+  "vjsstandard": {
+    "ignore": [
+      "karma-safari-launcher/node_modules"
+    ]
+  },
   "lint-staged": {
     "*.js": [
       "vjsstandard --fix",
@@ -42,8 +48,7 @@
     "karma-firefox-launcher": "^1.1.0",
     "karma-ie-launcher": "^1.0.0",
     "karma-qunit": "^2.0.0",
-    "karma-safari-launcher": "^1.0.0",
-    "karma-safaritechpreview-launcher": "0.0.6",
+    "karma-safari-launcher": "file:./karma-safari-launcher",
     "karma-static-server": "^1.0.0",
     "karma-teamcity-reporter": "^1.1.0",
     "qunit": "~2.9.1"
