@@ -1,3 +1,10 @@
+<a name="5.3.0"></a>
+# [5.3.0](https://github.com/videojs/videojs-generate-karma-config/compare/v5.2.0...v5.3.0) (2019-04-24)
+
+### Chores
+
+* **package:** update karma-qunit to ^3.0.0 ([1a73574](https://github.com/videojs/videojs-generate-karma-config/commit/1a73574))
+
 <a name="5.2.0"></a>
 # [5.2.0](https://github.com/videojs/videojs-generate-karma-config/compare/v5.1.0...v5.2.0) (2019-04-12)
 
