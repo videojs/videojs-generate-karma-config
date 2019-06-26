@@ -1,3 +1,14 @@
+<a name="5.2.1"></a>
+## [5.2.1](https://github.com/videojs/videojs-generate-karma-config/compare/v5.2.0...v5.2.1) (2019-06-26)
+
+### Bug Fixes
+
+* pin karma-browserstack-launcher@~1.4.0, prevents browserstack timeouts ([#28](https://github.com/videojs/videojs-generate-karma-config/issues/28)) ([cd17a4c](https://github.com/videojs/videojs-generate-karma-config/commit/cd17a4c))
+
+### Chores
+
+* **package:** update karma-qunit to ^3.0.0 ([#27](https://github.com/videojs/videojs-generate-karma-config/issues/27)) ([8465cf8](https://github.com/videojs/videojs-generate-karma-config/commit/8465cf8))
+
 <a name="5.2.0"></a>
 # [5.2.0](https://github.com/videojs/videojs-generate-karma-config/compare/v5.1.0...v5.2.0) (2019-04-12)
 
