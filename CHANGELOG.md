@@ -1,3 +1,6 @@
+<a name="5.3.1"></a>
+## [5.3.1](https://github.com/videojs/videojs-generate-karma-config/compare/v5.2.1...v5.3.1) (2019-08-19)
+
 <a name="5.2.1"></a>
 ## [5.2.1](https://github.com/videojs/videojs-generate-karma-config/compare/v5.2.0...v5.2.1) (2019-06-26)
 
