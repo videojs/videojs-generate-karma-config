@@ -126,7 +126,7 @@ module.exports = function(config) {
 > Type: `Boolean`
 > Default: `true`
 
-If we should prefer running headless browsers. This will change the defaults for `travisLaunchers` and `serverBrowsers` as well as automatic browser detection. Make sure to handle this in [`browsers`](###browsers)
+If we should prefer running headless browsers. This will change the defaults for `travisLaunchers` as well as automatic browser detection. Make sure to handle this in [`browsers`](###browsers)
 
 ### `detectBrowsers`
 
@@ -144,7 +144,7 @@ If we should detect browsers to run automatically. This will only be done when:
 > Type: `Function`
 > Default: `none`
 
-A function that should return an array of browsers that should run when in static server mode (--single-run=false). It should take one argument: The default serverBrowsers array which is `['ChromeHeadless']` if [`preferHeadless`](###preferHeadless) is true and `['Chrome']` otherwise.
+A function that should return an array of browsers that should run when in static server mode (--single-run=false). It should take one argument: The default serverBrowsers array which is `[]`.
 
 Example:
 
