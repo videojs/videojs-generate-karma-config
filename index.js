@@ -91,7 +91,7 @@ module.exports = function(config, options = {}) {
 
   // set defaults
   const settings = {
-    serverBrowsers: ['ChromeHeadless'],
+    serverBrowsers: [],
     customLaunchers,
     travisLaunchers,
     browserstackLaunchers,
@@ -118,7 +118,6 @@ module.exports = function(config, options = {}) {
 
   // if prefer headless is false, set defalts to non headless browsers
   if (settings.preferHeadless === false) {
-    settings.serverBrowsers = ['Chrome'];
     settings.travisLaunchers = {
       travisFirefox: {
         base: 'Firefox'
