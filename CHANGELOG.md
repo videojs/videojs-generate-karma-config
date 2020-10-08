@@ -1,3 +1,16 @@
+<a name="6.0.0"></a>
+# [6.0.0](https://github.com/videojs/videojs-generate-karma-config/compare/v5.3.1...v6.0.0) (2020-10-08)
+
+### Features
+
+* **BREAKING:** default to no headless server browsers ([#36](https://github.com/videojs/videojs-generate-karma-config/issues/36)) ([019b9cb](https://github.com/videojs/videojs-generate-karma-config/commit/019b9cb))
+
+
+### BREAKING CHANGES
+
+* **BREAKING:** for most projects server browsers are turned off, we
+should stop defaulting to using them.
+
 <a name="5.3.1"></a>
 ## [5.3.1](https://github.com/videojs/videojs-generate-karma-config/compare/v5.2.1...v5.3.1) (2019-08-19)
 
