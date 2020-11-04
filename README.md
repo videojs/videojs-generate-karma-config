@@ -27,8 +27,7 @@ Maintenance Status: Stable
   - [`detectBrowsers`](#detectbrowsers)
   - [`serverBrowsers`](#serverbrowsers)
   - [`customLaunchers`](#customlaunchers)
-  - [`teamcityLaunchers`](#teamcitylaunchers)
-  - [`travisLaunchers`](#travislaunchers)
+  - [`ciLaunchers`](#cilaunchers)
   - [`browserstackLaunchers`](#browserstacklaunchers)
   - [`coverage`](#coverage)
 - [Code Coverage](#code-coverage)
@@ -56,7 +55,6 @@ module.exports = function(config) {
   config = generateKarmaConfig(config, options);
 };
 ```
-
 ## Options
 By default all options are passed as the second argument to generateKarmaConfig.
 
@@ -126,7 +124,7 @@ module.exports = function(config) {
 > Type: `Boolean`
 > Default: `true`
 
-If we should prefer running headless browsers. This will change the defaults for `travisLaunchers` as well as automatic browser detection. Make sure to handle this in [`browsers`](###browsers)
+If we should prefer running headless browsers. This will change the defaults for `ciLaunchers` as well as automatic browser detection. Make sure to handle this in [`browsers`](###browsers)
 
 ### `detectBrowsers`
 
@@ -187,63 +185,21 @@ module.exports = function(config) {
 };
 ```
 
-### `teamcityLaunchers`
+### `ciLaunchers`
 
 > Type: `Function`
-> Default: `none`
+> Default: `{}`
 
-> NOTE: All browsers contained from this object will be run on teamcity, unless BROWSER_STACK_USERNAME is in the enviornment!
+> NOTE: All browsers contained from this object will be run on [ci](https://www.npmjs.com/package/is-ci) unless BROWSER_STACK_USERNAME is in the enviornment!
 
-A function that should return an object of karma custom launchers, that should be run on teamcity. It should take one argument: The default custom launchers object which is: `{}`;
+A function that should return an object containing karma custom launchers, that should all be run on ci. It should take one argument.: The default ci launchers object which empty is:
 
 Example:
 
 ```js
 module.exports = function(config) {
   const options = {
-    teamcityLaunchers(defaults) {
-      // add another browser to teamcity testing
-      return Object.assign(defaults, {
-        myTestLauncher: {
-          base: 'ChromeHeadless'
-        }
-      };
-    }
-  };
-
-  config = generateKarmaConfig(config, options);
-};
-```
-
-### `travisLaunchers`
-
-> Type: `Function`
-> Default: `none`
-
-> NOTE: All browsers contained from this object will be run on travis, unless BROWSER_STACK_USERNAME is in the enviornment!
-
-A function that should return an object containing karma custom launchers, that should all be run on travis. It should take one argument: The default travis launchers object which is:
-
-> Note: the base will change to non-headless browsers if [`preferHeadless`](###preferHeadless) is set to false.
-```js
-{
-  travisFirefox: {
-    base: 'FirefoxHeadless'
-  },
-  travisChrome: {
-    base: 'ChromeHeadless',
-    flags: ['--no-sandbox']
-  }
-
-}
-```
-
-Example:
-
-```js
-module.exports = function(config) {
-  const options = {
-    travisLaunchers(defaults) {
+    ciLaunchers(defaults) {
       // add another browser to travis testing
       return Object.assign(defaults, {
         myTestLauncher: {

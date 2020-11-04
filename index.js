@@ -2,22 +2,19 @@
 const path = require('path');
 const karmaPlugins = ['karma-*'];
 const libPkg = require('./package.json');
+const isCI = require('is-ci');
 
 // dynamically require karma plugins from `videojs-generate-karma-config`
 // as karma-* only works on project local plugins.
-Object.keys(libPkg.dependencies).forEach(function(p) {
-  if ((/^karma-/).test(p)) {
-    karmaPlugins.push(require(p));
+Object.keys(libPkg.dependencies).forEach(function(pkgName) {
+  const parts = pkgName.split('/');
+  const name = parts[parts.length - 1];
+
+  if ((/^karma-/).test(name)) {
+    karmaPlugins.push(require(pkgName));
   }
 });
 
-/* shared base browsers */
-const customLaunchers = {};
-
-/* browsers to run on teamcity */
-const teamcityLaunchers = {};
-
-/* browsers to run on browserstack */
 const browserstackLaunchers = {
   bsChrome: {
     'base': 'BrowserStack',
@@ -75,28 +72,16 @@ const browserstackLaunchers = {
   }
 };
 
-/* browsers to run on travis */
-const travisLaunchers = {
-  travisFirefox: {
-    base: 'FirefoxHeadless'
-  },
-  travisChrome: {
-    base: 'ChromeHeadless',
-    flags: ['--no-sandbox']
-  }
-};
-
 module.exports = function(config, options = {}) {
   const pkg = require(path.join(process.cwd(), 'package.json'));
 
   // set defaults
   const settings = {
     serverBrowsers: [],
-    customLaunchers,
-    travisLaunchers,
-    browserstackLaunchers,
-    teamcityLaunchers,
-    preferHeadless: true,
+    customLaunchers: {},
+    ciLaunchers: {},
+    browserstackLaunchers: Object.assign(browserstackLaunchers),
+    preferHeadless: typeof options.preferHeadless === 'boolean' ? options.preferHeadless : true,
     browsers: (browsers) => browsers,
     detectBrowsers: true,
     coverage: typeof options.coverage === 'boolean' ? options.coverage : true,
@@ -116,25 +101,11 @@ module.exports = function(config, options = {}) {
     }
   });
 
-  // if prefer headless is false, set defalts to non headless browsers
-  if (settings.preferHeadless === false) {
-    settings.travisLaunchers = {
-      travisFirefox: {
-        base: 'Firefox'
-      },
-      travisChrome: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
-    };
-  }
-
   // options that are passed as functions
   [
     'customLaunchers',
-    'travisLaunchers',
+    'ciLaunchers',
     'browserstackLaunchers',
-    'teamcityLaunchers',
     'serverBrowsers',
     'files'
   ].forEach(function(k) {
@@ -167,8 +138,7 @@ module.exports = function(config, options = {}) {
     ],
     customLaunchers: Object.assign(
       settings.customLaunchers,
-      settings.travisLaunchers,
-      settings.teamcityLaunchers,
+      settings.ciLaunchers,
       settings.browserstackLaunchers
     ),
     client: {clearContext: false, qunit: {showUI: true, testTimeout: 5000}},
@@ -220,32 +190,10 @@ module.exports = function(config, options = {}) {
   /* dynamic configuration, for ci and detectBrowsers */
 
   // determine what browsers should be run on this environment
-  if (process.env.BROWSER_STACK_USERNAME) {
+  if (process.env.BROWSER_STACK_USERNAME && Object.keys(settings.browserstackLaunchers).length) {
     config.browsers = Object.keys(settings.browserstackLaunchers);
-  } else if (process.env.TRAVIS) {
-    config.browsers = Object.keys(settings.travisLaunchers);
-  } else if (process.env.TEAMCITY_VERSION) {
-    config.browsers = Object.keys(settings.teamcityLaunchers);
-  }
-
-  // if running on travis
-  if (process.env.TRAVIS) {
-    config.browserStack.name = process.env.TRAVIS_BUILD_NUMBER || process.env.BUILD_NUMBER;
-    if (process.env.TRAVIS_PULL_REQUEST !== 'false') {
-      config.browserStack.name += ' ';
-      config.browserStack.name += process.env.TRAVIS_PULL_REQUEST;
-      config.browserStack.name += ' ';
-      config.browserStack.name += process.env.TRAVIS_PULL_REQUEST_BRANCH;
-    }
-
-    config.browserStack.name += ' ' + process.env.TRAVIS_BRANCH;
-
-  // if running on teamcity
-  } else if (process.env.TEAMCITY_VERSION) {
-    config.reporters.push('teamcity');
-    config.browserStack.name = process.env.TEAMCITY_PROJECT_NAME;
-    config.browserStack.name += '_';
-    config.browserStack.name += process.env.BUILD_NUMBER;
+  } else if (isCI && Object.keys(settings.ciLaunchers).length) {
+    config.browsers = Object.keys(settings.ciLaunchers);
   }
 
   // set the build to the name for more information about a build
@@ -254,18 +202,21 @@ module.exports = function(config, options = {}) {
   // in "server mode" if we have "serverBrowsers"
   if (serverMode && settings.serverBrowsers) {
     config.browsers = settings.serverBrowsers;
+  }
 
   // if detect browsers is not explicitly disabled, turn it on
-  } else if (settings.detectBrowsers !== false && config.browsers !== false && !config.browsers.length) {
-    config.detectBrowsers.enabled = true;
-
   // otherwise
-  } else if (settings.browsers) {
+  if (settings.browsers) {
     // if browsers is a boolean convert it to an array so postDetection is not confusing
     if (!Array.isArray(config.browsers)) {
       config.browsers = [];
     }
     config.browsers = settings.browsers(config.browsers);
+  }
+
+  // if no browsers are configured, and we are not in server mode.
+  if (!serverMode && config.browser !== false && !config.browsers.length) {
+    config.detectBrowsers.enabled = true;
   }
 
   if (serverMode || settings.coverage === false) {
