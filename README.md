@@ -24,7 +24,6 @@ Maintenance Status: Stable
   - [`files`](#files)
   - [`browsers`](#browsers)
   - [`preferHeadless`](#preferheadless)
-  - [`detectBrowsers`](#detectbrowsers)
   - [`serverBrowsers`](#serverbrowsers)
   - [`customLaunchers`](#customlaunchers)
   - [`ciLaunchers`](#cilaunchers)
@@ -125,17 +124,6 @@ module.exports = function(config) {
 > Default: `true`
 
 If we should prefer running headless browsers. This will change the defaults for `ciLaunchers` as well as automatic browser detection. Make sure to handle this in [`browsers`](###browsers)
-
-### `detectBrowsers`
-
-> Type: `Boolean`
-> Default: `true`
-
-> Note: If you set this to false, you will probably want to provide browsers using the [`browsers`](###browsers) option.
-
-If we should detect browsers to run automatically. This will only be done when:
-1. We are not running ci browsers (teamcity, browserstack, or travis)
-2. We are not running in `serverMode` (`--no-single-run` passed to karma cli)
 
 ### `serverBrowsers`
 
