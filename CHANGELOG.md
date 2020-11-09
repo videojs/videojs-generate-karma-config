@@ -1,3 +1,20 @@
+<a name="7.0.0"></a>
+# [7.0.0](https://github.com/videojs/videojs-generate-karma-config/compare/v6.0.0...v7.0.0) (2020-11-09)
+
+### Features
+
+* support any ci ([#37](https://github.com/videojs/videojs-generate-karma-config/issues/37)) ([1af972d](https://github.com/videojs/videojs-generate-karma-config/commit/1af972d))
+
+### Chores
+
+* update package versions ([a0e7e01](https://github.com/videojs/videojs-generate-karma-config/commit/a0e7e01))
+
+
+### BREAKING CHANGES
+
+* drop support `travisLaunchers` and `teamcityLaunchers` in favor of a more generic `ciLaunchers` and detection of ci using the using `is-ci` package.
+* drop support for the `detectBrowsers` option as it was only used in one specific scenario that would cause an error anyway. Browsers are always detected when no browsers are set via the karma config or karma runner cli.
+
 <a name="6.0.0"></a>
 # [6.0.0](https://github.com/videojs/videojs-generate-karma-config/compare/v5.3.1...v6.0.0) (2020-10-08)
 
