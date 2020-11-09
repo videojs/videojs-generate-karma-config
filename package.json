@@ -35,6 +35,7 @@
   },
   "homepage": "https://github.com/videojs/videojs-generate-karma-config",
   "dependencies": {
+    "is-ci": "^2.0.0",
     "karma-browserstack-launcher": "~1.4.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.2",

@@ -2,22 +2,19 @@
 const path = require('path');
 const karmaPlugins = ['karma-*'];
 const libPkg = require('./package.json');
+const isCI = require('is-ci');
 
 // dynamically require karma plugins from `videojs-generate-karma-config`
 // as karma-* only works on project local plugins.
-Object.keys(libPkg.dependencies).forEach(function(p) {
-  if ((/^karma-/).test(p)) {
-    karmaPlugins.push(require(p));
+Object.keys(libPkg.dependencies).forEach(function(pkgName) {
+  const parts = pkgName.split('/');
+  const name = parts[parts.length - 1];
+
+  if ((/^karma-/).test(name)) {
+    karmaPlugins.push(require(pkgName));
   }
 });
 
-/* shared base browsers */
-const customLaunchers = {};
-
-/* browsers to run on teamcity */
-const teamcityLaunchers = {};
-
-/* browsers to run on browserstack */
 const browserstackLaunchers = {
   bsChrome: {
     'base': 'BrowserStack',
@@ -75,31 +72,55 @@ const browserstackLaunchers = {
   }
 };
 
-/* browsers to run on travis */
-const travisLaunchers = {
-  travisFirefox: {
-    base: 'FirefoxHeadless'
-  },
-  travisChrome: {
-    base: 'ChromeHeadless',
-    flags: ['--no-sandbox']
+// detect if we are being run in "server mode" with --no-single-run
+const inServerMode = () => {
+  for (let i = 0; i < process.argv.length; i++) {
+    const arg = process.argv[i];
+
+    if ((/^(--no-single-run|--noSingleRun|--no-singleRun|--single-run=false|--singleRun=false)$/i).test(arg)) {
+      return true;
+    }
   }
+
+  return false;
 };
 
-module.exports = function(config, options = {}) {
-  const pkg = require(path.join(process.cwd(), 'package.json'));
+// normalize configured browsers based on:
+// 1. if we are in ci and no browsers are passed in
+// 2. We are in server mode and serverBrowsers is set
+// 3. We are not in server mode and browsers is set
+const normalizeBrowsers = ({serverMode, browsers, settings}) => {
+  browsers = Array.isArray(browsers) ? browsers : [];
 
-  // set defaults
-  const settings = {
-    serverBrowsers: [],
-    customLaunchers,
-    travisLaunchers,
-    browserstackLaunchers,
-    teamcityLaunchers,
+  // if browsers are not set explicitly, check if we are running in a ci.
+  if (!browsers.length) {
+    if (process.env.BROWSER_STACK_USERNAME && Object.keys(settings.browserstackLaunchers).length) {
+      browsers = Object.keys(settings.browserstackLaunchers);
+    } else if (isCI && Object.keys(settings.ciLaunchers).length) {
+      browsers = Object.keys(settings.ciLaunchers);
+    }
+  }
+
+  // in "server mode" if we have "serverBrowsers"
+  if (serverMode && settings.serverBrowsers) {
+    browsers = settings.serverBrowsers(browsers);
+  } else if (!serverMode && settings.browsers) {
+    browsers = settings.browsers(browsers);
+  }
+
+  return browsers;
+};
+
+// default settings
+const getDefaults = () => {
+  return {
+    serverBrowsers: (browsers) => [],
+    customLaunchers: {},
+    ciLaunchers: {},
+    browserstackLaunchers: Object.assign(browserstackLaunchers),
     preferHeadless: true,
     browsers: (browsers) => browsers,
-    detectBrowsers: true,
-    coverage: typeof options.coverage === 'boolean' ? options.coverage : true,
+    coverage: true,
     files: [
       'node_modules/video.js/dist/video-js.css',
       'dist/*.css',
@@ -108,58 +129,34 @@ module.exports = function(config, options = {}) {
       'test/dist/bundle.js'
     ]
   };
+};
+
+module.exports = function(config, options = {}) {
+  const cwd = process.env.INIT_CWD || process.cwd();
+  const pkg = require(path.join(cwd, 'package.json'));
+  const settings = getDefaults();
+  const serverMode = inServerMode();
 
   // options that are passed as values
-  ['detectBrowsers', 'preferHeadless', 'browsers'].forEach(function(k) {
+  ['preferHeadless', 'browsers', 'coverage', 'serverBrowsers'].forEach(function(k) {
     if (typeof options[k] !== 'undefined') {
       settings[k] = options[k];
     }
   });
 
-  // if prefer headless is false, set defalts to non headless browsers
-  if (settings.preferHeadless === false) {
-    settings.travisLaunchers = {
-      travisFirefox: {
-        base: 'Firefox'
-      },
-      travisChrome: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
-    };
-  }
-
   // options that are passed as functions
-  [
-    'customLaunchers',
-    'travisLaunchers',
-    'browserstackLaunchers',
-    'teamcityLaunchers',
-    'serverBrowsers',
-    'files'
-  ].forEach(function(k) {
-    if (!options[k]) {
-      return;
+  // NOTE: we leave out serverBrowsers/browsers here as
+  // those are configured in normalizeBrowsers
+  ['customLaunchers', 'ciLaunchers', 'browserstackLaunchers', 'files'].forEach(function(k) {
+    if (options[k]) {
+      // pass default settings to the options function
+      settings[k] = options[k](settings[k]);
     }
-
-    // pass default settings to the options function
-    settings[k] = options[k](settings[k]);
   });
-
-  // detect if we are being run in "server mode" with --no-single-run
-  let serverMode = false;
-
-  for (let i = 0; i < process.argv.length; i++) {
-    const arg = process.argv[i];
-
-    if ((/^(--no-single-run|--noSingleRun|--no-singleRun|--single-run=false|--singleRun=false)$/i).test(arg)) {
-      serverMode = true;
-    }
-  }
 
   config.set({
     frameworks: ['qunit', 'detectBrowsers'],
-    basePath: process.cwd(),
+    basePath: cwd,
     customHeaders: [
       {match: '.*', name: 'Cache-Control', value: 'no-cache, no-store, must-revalidate'},
       {match: '.*', name: 'Pragma', value: 'no-cache'},
@@ -167,12 +164,11 @@ module.exports = function(config, options = {}) {
     ],
     customLaunchers: Object.assign(
       settings.customLaunchers,
-      settings.travisLaunchers,
-      settings.teamcityLaunchers,
+      settings.ciLaunchers,
       settings.browserstackLaunchers
     ),
     client: {clearContext: false, qunit: {showUI: true, testTimeout: 5000}},
-
+    browsers: normalizeBrowsers({serverMode, browsers: config.browsers, settings}),
     detectBrowsers: {
       preferHeadless: settings.preferHeadless,
       enabled: false,
@@ -182,6 +178,7 @@ module.exports = function(config, options = {}) {
     browserStack: {
       project: process.env.TEAMCITY_PROJECT_NAME || pkg.name,
       name: process.env.TEAMCITY_PROJECT_NAME || pkg.name,
+      build: process.env.TEAMCITY_PROJECT_NAME || pkg.name,
       pollingTimeout: 30000,
       captureTimeout: 600,
       timeout: 600
@@ -217,57 +214,12 @@ module.exports = function(config, options = {}) {
     browserNoActivityTimeout: 300000
   });
 
-  /* dynamic configuration, for ci and detectBrowsers */
-
-  // determine what browsers should be run on this environment
-  if (process.env.BROWSER_STACK_USERNAME) {
-    config.browsers = Object.keys(settings.browserstackLaunchers);
-  } else if (process.env.TRAVIS) {
-    config.browsers = Object.keys(settings.travisLaunchers);
-  } else if (process.env.TEAMCITY_VERSION) {
-    config.browsers = Object.keys(settings.teamcityLaunchers);
-  }
-
-  // if running on travis
-  if (process.env.TRAVIS) {
-    config.browserStack.name = process.env.TRAVIS_BUILD_NUMBER || process.env.BUILD_NUMBER;
-    if (process.env.TRAVIS_PULL_REQUEST !== 'false') {
-      config.browserStack.name += ' ';
-      config.browserStack.name += process.env.TRAVIS_PULL_REQUEST;
-      config.browserStack.name += ' ';
-      config.browserStack.name += process.env.TRAVIS_PULL_REQUEST_BRANCH;
-    }
-
-    config.browserStack.name += ' ' + process.env.TRAVIS_BRANCH;
-
-  // if running on teamcity
-  } else if (process.env.TEAMCITY_VERSION) {
-    config.reporters.push('teamcity');
-    config.browserStack.name = process.env.TEAMCITY_PROJECT_NAME;
-    config.browserStack.name += '_';
-    config.browserStack.name += process.env.BUILD_NUMBER;
-  }
-
-  // set the build to the name for more information about a build
-  config.browserStack.build = config.browserStack.name;
-
-  // in "server mode" if we have "serverBrowsers"
-  if (serverMode && settings.serverBrowsers) {
-    config.browsers = settings.serverBrowsers;
-
-  // if detect browsers is not explicitly disabled, turn it on
-  } else if (settings.detectBrowsers !== false && config.browsers !== false && !config.browsers.length) {
+  // never detect browsers in serverMode or if we already have browsers configured
+  if (!serverMode && !config.browsers.length) {
     config.detectBrowsers.enabled = true;
-
-  // otherwise
-  } else if (settings.browsers) {
-    // if browsers is a boolean convert it to an array so postDetection is not confusing
-    if (!Array.isArray(config.browsers)) {
-      config.browsers = [];
-    }
-    config.browsers = settings.browsers(config.browsers);
   }
 
+  // never report coverage if coverage is false or in serverMode
   if (serverMode || settings.coverage === false) {
     delete config.coverageReporter;
     // remove coverage
