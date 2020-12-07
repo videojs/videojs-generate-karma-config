@@ -40,7 +40,7 @@
     "karma-safari-applescript-launcher": "~0.1.0",
     "karma-static-server": "^1.0.0",
     "karma-teamcity-reporter": "^1.1.0",
-    "qunit": "~2.12.0"
+    "qunit": "~2.13.0"
   },
   "peerDependencies": {
     "karma": "*"
