@@ -1,3 +1,10 @@
+<a name="7.0.1"></a>
+## [7.0.1](https://github.com/videojs/videojs-generate-karma-config/compare/v7.0.0...v7.0.1) (2020-12-07)
+
+### Chores
+
+* update qunit ([10f6d84](https://github.com/videojs/videojs-generate-karma-config/commit/10f6d84))
+
 <a name="7.0.0"></a>
 # [7.0.0](https://github.com/videojs/videojs-generate-karma-config/compare/v6.0.0...v7.0.0) (2020-11-09)
 
