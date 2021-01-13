@@ -297,7 +297,7 @@ module.exports = function(config) {
 ### `showQUnitUI`
 
 > Type: `Boolean`
-> Default: `false`
+> Default: `false` if in single-run mode, `true` otherwise
 
 Show the QUnit UI in non-debug runs of Karma. This sets both `client.clearContext = false` and `client.qunit.showUI: true`.
 

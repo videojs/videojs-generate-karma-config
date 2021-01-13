@@ -118,7 +118,7 @@ const getDefaults = () => {
     customLaunchers: {},
     ciLaunchers: {},
     browserstackLaunchers: Object.assign(browserstackLaunchers),
-    showQUnitUI: false,
+    showQUnitUI: inServerMode(),
     preferHeadless: true,
     browsers: (browsers) => browsers,
     coverage: true,
