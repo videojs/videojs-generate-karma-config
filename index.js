@@ -118,6 +118,7 @@ const getDefaults = () => {
     customLaunchers: {},
     ciLaunchers: {},
     browserstackLaunchers: Object.assign(browserstackLaunchers),
+    showQUnitUI: inServerMode(),
     preferHeadless: true,
     browsers: (browsers) => browsers,
     coverage: true,
@@ -138,7 +139,7 @@ module.exports = function(config, options = {}) {
   const serverMode = inServerMode();
 
   // options that are passed as values
-  ['preferHeadless', 'browsers', 'coverage', 'serverBrowsers'].forEach(function(k) {
+  ['preferHeadless', 'browsers', 'coverage', 'serverBrowsers', 'showQUnitUI'].forEach(function(k) {
     if (typeof options[k] !== 'undefined') {
       settings[k] = options[k];
     }
@@ -167,7 +168,8 @@ module.exports = function(config, options = {}) {
       settings.ciLaunchers,
       settings.browserstackLaunchers
     ),
-    client: {clearContext: false, qunit: {showUI: true, testTimeout: 5000}},
+    // if we're showing QUnit UI, we shouldn't clearContext
+    client: {clearContext: !settings.showQUnitUI, qunit: {showUI: settings.showQUnitUI, testTimeout: 5000}},
     browsers: normalizeBrowsers({serverMode, browsers: config.browsers, settings}),
     detectBrowsers: {
       preferHeadless: settings.preferHeadless,
