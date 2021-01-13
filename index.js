@@ -139,16 +139,12 @@ module.exports = function(config, options = {}) {
   const settings = getDefaults();
   const serverMode = inServerMode();
 
-  console.log(options.reporters);
-
   // options that are passed as values
   ['preferHeadless', 'browsers', 'coverage', 'serverBrowsers', 'showQUnitUI', 'reporters'].forEach(function(k) {
     if (typeof options[k] !== 'undefined') {
       settings[k] = options[k];
     }
   });
-
-  console.log(settings.reporters);
 
   // options that are passed as functions
   // NOTE: we leave out serverBrowsers/browsers here as
@@ -174,7 +170,7 @@ module.exports = function(config, options = {}) {
       settings.browserstackLaunchers
     ),
     // if we're showing QUnit UI, we shouldn't clearContext
-    client: {clearContext: !settings.showQUnitUI, qunit: {showUI: settings.showQUnitUI, testTimeout: 5000}},
+    client: {clearContext: !settings.showQUnitUI, qunit: {showUI: settings.showQUnitUI, reorder: false, testTimeout: 5000}},
     browsers: normalizeBrowsers({serverMode, browsers: config.browsers, settings}),
     detectBrowsers: {
       preferHeadless: settings.preferHeadless,
@@ -244,8 +240,6 @@ module.exports = function(config, options = {}) {
       config.plugins.splice(karmaCovIndex, 1);
     }
   }
-
-  console.log(config.reporters);
 
   return config;
 };
