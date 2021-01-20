@@ -30,6 +30,7 @@ Maintenance Status: Stable
   - [`browserstackLaunchers`](#browserstacklaunchers)
   - [`coverage`](#coverage)
   - [`showQUnitUI`](#showqunitui)
+  - ['reporters'](#reporters)
 - [Code Coverage](#code-coverage)
   - [codecov.io](#codecovio)
   - [View the html report](#view-the-html-report)
@@ -302,6 +303,13 @@ module.exports = function(config) {
 Show the QUnit UI in non-debug runs of Karma. This sets both `client.clearContext = false` and `client.qunit.showUI: true`.
 
 Having `clearContext` turned off increases test reliability. However, sometimes, showing the QUnit UI during test runs is useful to track down a test that is timing out or failing, particularly on CI/Browserstack.
+
+### 'reporters'
+
+> Type: 'Array'
+> Default: 'dots' for CI and 'progress' for local.
+
+If passed in, the value passed will be used. If coverage is turned on, and reporters is being set, 'coverage' must be included in the list. 'coverage' is removed from the list if the `coverage` setting is `false`.
 
 ## Code Coverage
 lcov, json, and html coverage reports will be generated in `test/dist/coverage` after a test run. Unless coverage is set to false.

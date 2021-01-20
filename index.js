@@ -120,6 +120,7 @@ const getDefaults = () => {
     browserstackLaunchers: Object.assign(browserstackLaunchers),
     showQUnitUI: inServerMode(),
     preferHeadless: true,
+    reporters: [ isCI ? 'dots' : 'progress', 'coverage'],
     browsers: (browsers) => browsers,
     coverage: true,
     files: [
@@ -139,7 +140,7 @@ module.exports = function(config, options = {}) {
   const serverMode = inServerMode();
 
   // options that are passed as values
-  ['preferHeadless', 'browsers', 'coverage', 'serverBrowsers', 'showQUnitUI'].forEach(function(k) {
+  ['preferHeadless', 'browsers', 'coverage', 'serverBrowsers', 'showQUnitUI', 'reporters'].forEach(function(k) {
     if (typeof options[k] !== 'undefined') {
       settings[k] = options[k];
     }
@@ -169,7 +170,7 @@ module.exports = function(config, options = {}) {
       settings.browserstackLaunchers
     ),
     // if we're showing QUnit UI, we shouldn't clearContext
-    client: {clearContext: !settings.showQUnitUI, qunit: {showUI: settings.showQUnitUI, testTimeout: 5000}},
+    client: {clearContext: !settings.showQUnitUI, qunit: {showUI: settings.showQUnitUI, reorder: false, testTimeout: 5000}},
     browsers: normalizeBrowsers({serverMode, browsers: config.browsers, settings}),
     detectBrowsers: {
       preferHeadless: settings.preferHeadless,
@@ -185,7 +186,7 @@ module.exports = function(config, options = {}) {
       captureTimeout: 600,
       timeout: 600
     },
-    reporters: ['dots', 'coverage'],
+    reporters: settings.reporters,
     coverageReporter: {
       reporters: [
         // generates test/dist/coverage/index.html
@@ -224,11 +225,20 @@ module.exports = function(config, options = {}) {
   // never report coverage if coverage is false or in serverMode
   if (serverMode || settings.coverage === false) {
     delete config.coverageReporter;
+
     // remove coverage
-    config.reporters.splice(config.reporters.indexOf('coverage'), 1);
+    const covIndex = config.reporters.indexOf('coverage');
+
+    if (covIndex >= 0) {
+      config.reporters.splice(covIndex, 1);
+    }
 
     // remove karma-coverage
-    config.plugins.splice(config.plugins.indexOf('karma-coverage'), 1);
+    const karmaCovIndex = config.plugins.indexOf('karma-coverage');
+
+    if (karmaCovIndex >= 0) {
+      config.plugins.splice(karmaCovIndex, 1);
+    }
   }
 
   return config;
