@@ -1,3 +1,11 @@
+<a name="7.1.0"></a>
+# [7.1.0](https://github.com/videojs/videojs-generate-karma-config/compare/v7.0.1...v7.1.0) (2021-01-20)
+
+### Features
+
+* reporters option, default to progress ([#39](https://github.com/videojs/videojs-generate-karma-config/issues/39)) ([1b7044d](https://github.com/videojs/videojs-generate-karma-config/commit/1b7044d))
+* turn off qunit ui unless in server mode, add option to turn it on  ([#38](https://github.com/videojs/videojs-generate-karma-config/issues/38)) ([396fcda](https://github.com/videojs/videojs-generate-karma-config/commit/396fcda))
+
 <a name="7.0.1"></a>
 ## [7.0.1](https://github.com/videojs/videojs-generate-karma-config/compare/v7.0.0...v7.0.1) (2020-12-07)
 
