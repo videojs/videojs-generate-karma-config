@@ -1,3 +1,10 @@
+<a name="8.0.0"></a>
+# [8.0.0](https://github.com/videojs/videojs-generate-karma-config/compare/v7.1.0...v8.0.0) (2021-05-13)
+
+### Features
+
+* drop ie 11, old edge, safari 9, add safari 14 ([#40](https://github.com/videojs/videojs-generate-karma-config/issues/40)) ([ccc0f64](https://github.com/videojs/videojs-generate-karma-config/commit/ccc0f64))
+
 <a name="7.1.0"></a>
 # [7.1.0](https://github.com/videojs/videojs-generate-karma-config/compare/v7.0.1...v7.1.0) (2021-01-20)
 
