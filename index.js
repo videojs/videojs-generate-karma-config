@@ -34,7 +34,7 @@ const browserstackLaunchers = {
     'browserstack.video': 'false'
   },
 
-  bsSafariMojave: {
+  bsSafari12: {
     'base': 'BrowserStack',
     'browser': 'safari',
     'os': 'OS X',
@@ -43,30 +43,11 @@ const browserstackLaunchers = {
     'browserstack.video': 'false'
   },
 
-  bsSafariElCapitan: {
+  bsSafari14: {
     'base': 'BrowserStack',
     'browser': 'safari',
     'os': 'OS X',
-    'os_version': 'El Capitan',
-    'browserstack.local': 'false',
-    'browserstack.video': 'false'
-  },
-
-  bsEdgeWin10: {
-    'base': 'BrowserStack',
-    'browser': 'edge',
-    'os': 'Windows',
-    'os_version': '10',
-    'browserstack.local': 'false',
-    'browserstack.video': 'false'
-  },
-
-  bsIE11Win10: {
-    'base': 'BrowserStack',
-    'browser': 'ie',
-    'browser_version': '11',
-    'os': 'Windows',
-    'os_version': '10',
+    'os_version': 'Big Sur',
     'browserstack.local': 'false',
     'browserstack.video': 'false'
   }
