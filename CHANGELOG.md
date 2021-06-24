@@ -1,3 +1,10 @@
+<a name="8.0.1"></a>
+## [8.0.1](https://github.com/videojs/videojs-generate-karma-config/compare/v8.0.0...v8.0.1) (2021-06-24)
+
+### Chores
+
+* update dependencies ([00e867a](https://github.com/videojs/videojs-generate-karma-config/commit/00e867a))
+
 <a name="8.0.0"></a>
 # [8.0.0](https://github.com/videojs/videojs-generate-karma-config/compare/v7.1.0...v8.0.0) (2021-05-13)
 
