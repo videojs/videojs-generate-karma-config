@@ -20,7 +20,7 @@ const browserstackLaunchers = {
     'base': 'BrowserStack',
     'browser': 'chrome',
     'os': 'Windows',
-    'os_version': '10',
+    'os_version': '11',
     'browserstack.local': 'false',
     'browserstack.video': 'false'
   },
@@ -29,16 +29,16 @@ const browserstackLaunchers = {
     'base': 'BrowserStack',
     'browser': 'firefox',
     'os': 'Windows',
-    'os_version': '10',
+    'os_version': '11',
     'browserstack.local': 'false',
     'browserstack.video': 'false'
   },
 
-  bsSafari12: {
+  bsSafari16: {
     'base': 'BrowserStack',
     'browser': 'safari',
     'os': 'OS X',
-    'os_version': 'Mojave',
+    'os_version': 'Ventura',
     'browserstack.local': 'false',
     'browserstack.video': 'false'
   },
