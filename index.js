@@ -25,6 +25,16 @@ const browserstackLaunchers = {
     'browserstack.video': 'false'
   },
 
+  bsChrome53: {
+    'base': 'BrowserStack',
+    'browser': 'chrome',
+    'browser_version': '53',
+    'os': 'Windows',
+    'os_version': '10',
+    'browserstack.local': 'false',
+    'browserstack.video': 'false'
+  },
+
   bsFirefox: {
     'base': 'BrowserStack',
     'browser': 'firefox',

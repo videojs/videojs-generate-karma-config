@@ -220,6 +220,14 @@ A function that should return an object containing karma custom launchers, that 
     os_version: '10'
   },
 
+  bsChrome53: {
+    base: 'BrowserStack',
+    browser: 'chrome',
+    browser_version: '53',
+    os: 'Windows',
+    os_version: '10'
+  },
+
   bsFirefox: {
     base: 'BrowserStack',
     browser: 'firefox',
@@ -227,34 +235,18 @@ A function that should return an object containing karma custom launchers, that 
     os_version: '10'
   },
 
-  bsSafariSierra: {
+  bsSafari12: {
     base: 'BrowserStack',
     browser: 'safari',
     os: 'OS X',
-    os_version: 'Sierra'
+    os_version: 'Mojave'
   },
 
-  bsEdgeWin10: {
+  bsSafari14: {
     base: 'BrowserStack',
-    browser: 'edge',
-    os: 'Windows',
-    os_version: '10'
-  },
-
-  bsIE11Win10: {
-    base: 'BrowserStack',
-    browser: 'ie',
-    browser_version: '11',
-    os: 'Windows',
-    os_version: '10'
-  },
-
-  bsIE11Win7: {
-    base: 'BrowserStack',
-    browser: 'ie',
-    browser_version: '11',
-    os: 'Windows',
-    os_version: '7'
+    browser: 'safari',
+    os: 'OS X',
+    os_version: 'Big Sur'
   }
 }
 ```
@@ -263,9 +255,9 @@ A function that should return an object containing karma custom launchers, that 
 module.exports = function(config) {
   const options = {
     BrowserstackLaunchers(defaults) {
-      // only test on Edge windows 10
+      // only test on Safari Big Sur
       return {
-        bsEdgeWin10: defaults.bsEdgeWin10;
+        bsEdgeWin10: defaults.bsSafari14;
       };
     }
   };
