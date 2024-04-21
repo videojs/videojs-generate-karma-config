@@ -34,20 +34,20 @@ const browserstackLaunchers = {
     'browserstack.video': 'false'
   },
 
-  bsSafari16: {
+  bsSafari15: {
     'base': 'BrowserStack',
     'browser': 'safari',
     'os': 'OS X',
-    'os_version': 'Ventura',
+    'os_version': 'Monterey',
     'browserstack.local': 'false',
     'browserstack.video': 'false'
   },
 
-  bsSafari14: {
+  bsSafari17: {
     'base': 'BrowserStack',
     'browser': 'safari',
     'os': 'OS X',
-    'os_version': 'Big Sur',
+    'os_version': 'Sonoma',
     'browserstack.local': 'false',
     'browserstack.video': 'false'
   }
