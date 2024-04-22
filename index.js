@@ -20,7 +20,7 @@ const browserstackLaunchers = {
     'base': 'BrowserStack',
     'browser': 'chrome',
     'os': 'Windows',
-    'os_version': '10',
+    'os_version': '11',
     'browserstack.local': 'false',
     'browserstack.video': 'false'
   },
@@ -29,25 +29,25 @@ const browserstackLaunchers = {
     'base': 'BrowserStack',
     'browser': 'firefox',
     'os': 'Windows',
-    'os_version': '10',
+    'os_version': '11',
     'browserstack.local': 'false',
     'browserstack.video': 'false'
   },
 
-  bsSafari12: {
+  bsSafari15: {
     'base': 'BrowserStack',
     'browser': 'safari',
     'os': 'OS X',
-    'os_version': 'Mojave',
+    'os_version': 'Monterey',
     'browserstack.local': 'false',
     'browserstack.video': 'false'
   },
 
-  bsSafari14: {
+  bsSafari17: {
     'base': 'BrowserStack',
     'browser': 'safari',
     'os': 'OS X',
-    'os_version': 'Big Sur',
+    'os_version': 'Sonoma',
     'browserstack.local': 'false',
     'browserstack.video': 'false'
   }
