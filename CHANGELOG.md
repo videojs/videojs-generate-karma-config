@@ -1,3 +1,17 @@
+<a name="8.1.0"></a>
+# [8.1.0](https://github.com/videojs/videojs-generate-karma-config/compare/v8.0.1...v8.1.0) (2024-05-20)
+
+### Features
+
+* update browser/os versions ([#43](https://github.com/videojs/videojs-generate-karma-config/issues/43)) ([1ad2049](https://github.com/videojs/videojs-generate-karma-config/commit/1ad2049))
+
+### Chores
+
+* cleanup package.json and bump node ([#46](https://github.com/videojs/videojs-generate-karma-config/issues/46)) ([be3ef1d](https://github.com/videojs/videojs-generate-karma-config/commit/be3ef1d))
+* **package:** update dependencies ([#42](https://github.com/videojs/videojs-generate-karma-config/issues/42)) ([fa15518](https://github.com/videojs/videojs-generate-karma-config/commit/fa15518))
+* **package:** update dependencies to fix vulnerabilities ([#45](https://github.com/videojs/videojs-generate-karma-config/issues/45)) ([f248808](https://github.com/videojs/videojs-generate-karma-config/commit/f248808))
+* Update dependencies ([#47](https://github.com/videojs/videojs-generate-karma-config/issues/47)) ([17281c4](https://github.com/videojs/videojs-generate-karma-config/commit/17281c4))
+
 <a name="8.0.1"></a>
 ## [8.0.1](https://github.com/videojs/videojs-generate-karma-config/compare/v8.0.0...v8.0.1) (2021-06-24)
 
